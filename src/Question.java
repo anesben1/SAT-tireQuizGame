@@ -4,6 +4,14 @@ public class Question {
     private String[] answerChoices;
     private int correctAnswerIndex;
 
+
+
+    public Question(String questionText, String[] answerChoices, int correctAnswerIndex) {
+        this.questionText = questionText;
+        this.answerChoices = answerChoices;
+        this.correctAnswerIndex = correctAnswerIndex;
+    }
+
     public String getQuestionText() {
         return questionText;
     }
