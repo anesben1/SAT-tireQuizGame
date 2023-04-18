@@ -4,6 +4,9 @@ public class App {
     public static void main(String[] args) throws Exception {
        
         QuizUI quiz = new QuizUI();
+        QuizLogic quizLogic = new QuizLogic();
+        quizLogic.loadQuiz();
+
 
 
         // create a new QuestionDatabase object by passing in the file name

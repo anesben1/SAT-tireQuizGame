@@ -5,12 +5,18 @@ public class Quiz {
     private ArrayList<Question> questions;
     private int currentQuestionIndex;
     private int score;
+    private int numCorrectAnswers;
     
     // constructor
     public Quiz(ArrayList<Question> questions) {
         this.questions = questions;
         this.currentQuestionIndex = 0;
         this.score = 0;
+    }
+    public Quiz() {
+        this.questions = new ArrayList<Question>();
+        this.currentQuestionIndex = 0;
+        this.numCorrectAnswers = 0;
     }
     
 
