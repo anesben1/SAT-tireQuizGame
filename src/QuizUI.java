@@ -45,7 +45,7 @@ public class QuizUI {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout());
         submitButton = new JButton("Submit");
-        submitButton.addActionListener(new SubmitListener());
+        //submitButton.addActionListener(new SubmitListener());
         bottomPanel.add(submitButton);
         scoreLabel = new JLabel("Score: 0");
         bottomPanel.add(scoreLabel);
@@ -86,9 +86,29 @@ public class QuizUI {
     }
 
     private class SubmitListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            
+
+
+        private Quiz quiz;
+        private QuizLogic quizLogic;
+
+        public SubmitListener(Quiz quiz) {
+            this.quiz = quiz;
+            this.quizLogic = new QuizLogic();
         }
+
+        public void actionPerformed(ActionEvent e) {
+            int answer = getAnswer();
+            quiz.submitAnswer(answer);
+            if (quiz.isFinished()) {
+                displayScore();
+            } else {
+                currentQuestion++;
+                displayQuestion();
+            }
+        }
+
+
+        
     }
 }
 

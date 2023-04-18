@@ -1,0 +1,3 @@
+What is the value of x in the equation 3x - 5 = 16?,25;19;9;7,1
+Who wrote the novel "To Kill a Mockingbird"?,Harper Lee;Mark Twain;F. Scott Fitzgerald;Ernest Hemingway,0
+Which planet is closest to the sun?,Mercury;Venus;Earth;Mars,0
