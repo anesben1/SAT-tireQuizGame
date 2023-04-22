@@ -5,30 +5,14 @@ public class Quiz {
     private ArrayList<Question> questions;
     private int currentQuestionIndex;
     private int score;
-    private int numCorrectAnswers;
-    private boolean finished;
     private int numQuestions;
     
     // constructor
-    public Quiz(ArrayList<Question> questions, QuizUI quizUI) {
-        this.questions = questions;
-        this.currentQuestionIndex = 0;
-        this.score = 0;
-        this.numQuestions = quizUI.getNumQuestions();
-        this.numCorrectAnswers = 0;
-    }
     public Quiz(ArrayList<Question> questions) {
         this.questions = questions;
         this.currentQuestionIndex = 0;
-        this.finished = false;
-        this.numCorrectAnswers = 0;
-    }
-    public Quiz() {
-        this.questions = new ArrayList<Question>();
-        this.currentQuestionIndex = 0;
-        this.numCorrectAnswers = 0;
         this.score = 0;
-        this.numQuestions = 0;
+        this.numQuestions = questions.size();
     }
     
 
@@ -42,7 +26,6 @@ public class Quiz {
     public void submitAnswer(int answer) {
         if (answer == questions.get(currentQuestionIndex).getCorrectAnswerIndex()) {
             score++;
-            numCorrectAnswers++;
         }
         currentQuestionIndex++;
     }
@@ -57,17 +40,22 @@ public class Quiz {
     public int getNumQuestions() {
         return numQuestions;
     }
-    
-    public void nextQuestion() {
+
+    public void nextQuestion(){
         currentQuestionIndex++;
     }
-    public Question getCurrentQuestion() {
+
+
+    public Question getCurrentQuestion(){
         return questions.get(currentQuestionIndex);
+    }
+    public int getScore() {
+        return score;
     }
     
     
     // methods
-    // public void displayCurrentQuestion() {
+    // public voichd displayCurrentQuestion() {
     //     // display the current question to the user
     // }
     
