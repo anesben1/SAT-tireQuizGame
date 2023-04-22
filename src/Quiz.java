@@ -6,17 +6,29 @@ public class Quiz {
     private int currentQuestionIndex;
     private int score;
     private int numCorrectAnswers;
+    private boolean finished;
+    private int numQuestions;
     
     // constructor
-    public Quiz(ArrayList<Question> questions) {
+    public Quiz(ArrayList<Question> questions, QuizUI quizUI) {
         this.questions = questions;
         this.currentQuestionIndex = 0;
         this.score = 0;
+        this.numQuestions = quizUI.getNumQuestions();
+        this.numCorrectAnswers = 0;
+    }
+    public Quiz(ArrayList<Question> questions) {
+        this.questions = questions;
+        this.currentQuestionIndex = 0;
+        this.finished = false;
+        this.numCorrectAnswers = 0;
     }
     public Quiz() {
         this.questions = new ArrayList<Question>();
         this.currentQuestionIndex = 0;
         this.numCorrectAnswers = 0;
+        this.score = 0;
+        this.numQuestions = 0;
     }
     
 
@@ -30,6 +42,7 @@ public class Quiz {
     public void submitAnswer(int answer) {
         if (answer == questions.get(currentQuestionIndex).getCorrectAnswerIndex()) {
             score++;
+            numCorrectAnswers++;
         }
         currentQuestionIndex++;
     }
@@ -39,6 +52,17 @@ public class Quiz {
     //check end of the quiz 
     public boolean isFinished() {
         return currentQuestionIndex >= questions.size();
+    }
+
+    public int getNumQuestions() {
+        return numQuestions;
+    }
+    
+    public void nextQuestion() {
+        currentQuestionIndex++;
+    }
+    public Question getCurrentQuestion() {
+        return questions.get(currentQuestionIndex);
     }
     
     

@@ -9,13 +9,76 @@ public class QuizUI {
     private JRadioButton answer2;
     private JRadioButton answer3;
     private JRadioButton answer4;
+    private JRadioButton[] answerButtons = { answer1, answer2, answer3, answer4 };
     private JButton submitButton;
     private JLabel scoreLabel;
     private int currentQuestion;
     private int score;
     private QuizLogic quizLogic;
     private Quiz quiz;
-    private JPanel answerPanel;
+    private JPanel answerPanel; 
+    private QuizCustomization quizCustomization;
+    private QuestionDatabase questionDB;
+    private int currentQuestionIndex;
+    private int numQuestions;
+    private int numCorrectAnswers;
+
+    
+    
+    public QuizUI(Quiz quiz) {
+        this.quiz = quiz;
+        this.numQuestions = quiz.getNumQuestions();
+        this.currentQuestionIndex = 0;
+        this.numCorrectAnswers = 0;
+
+        frame = new JFrame("Java Quiz Game");
+    frame.setLayout(new BorderLayout());
+    frame.setSize(400, 400);
+
+    JPanel topPanel = new JPanel();
+    topPanel.setLayout(new BorderLayout());
+    questionLabel = new JLabel("Question goes here");
+    topPanel.add(questionLabel, BorderLayout.NORTH);
+    answerPanel = new JPanel();
+    answerPanel.setLayout(new GridLayout(4, 1));
+    answer1 = new JRadioButton("Answer 1");
+    answer2 = new JRadioButton("Answer 2");
+    answer3 = new JRadioButton("Answer 3");
+    answer4 = new JRadioButton("Answer 4");
+    answerButtons[0] = answer1;
+    answerButtons[1] = answer2;
+    answerButtons[2] = answer3;
+    answerButtons[3] = answer4;
+    ButtonGroup buttonGroup = new ButtonGroup();
+    buttonGroup.add(answer1);
+    buttonGroup.add(answer2);
+    buttonGroup.add(answer3);
+    buttonGroup.add(answer4);
+    answerPanel.add(answer1);
+    answerPanel.add(answer2);
+    answerPanel.add(answer3);
+    answerPanel.add(answer4);
+    topPanel.add(answerPanel, BorderLayout.CENTER);
+    frame.add(topPanel, BorderLayout.CENTER);
+
+    JPanel bottomPanel = new JPanel();
+    bottomPanel.setLayout(new FlowLayout());
+    submitButton = new JButton("Submit");
+    submitButton.addActionListener(new SubmitListener(quiz, answerPanel));
+
+    bottomPanel.add(submitButton);
+    scoreLabel = new JLabel("Score: 0");
+    bottomPanel.add(scoreLabel);
+    frame.add(bottomPanel, BorderLayout.SOUTH);
+
+    currentQuestion = 0;
+    score = 0;
+    quizLogic = new QuizLogic();
+    displayQuestion();
+    frame.setVisible(true);
+
+        
+    }
 
     public QuizUI() {
         frame = new JFrame("Java Quiz Game");
@@ -57,10 +120,21 @@ public class QuizUI {
         currentQuestion = 0;
         score = 0;
         quizLogic = new QuizLogic();
-        quiz = quizLogic.loadQuiz();
+        quiz = quizLogic.loadQuiz(quizCustomization, questionDB);
         displayQuestion();
         frame.setVisible(true);
     }
+
+    public void displayNextQuestion() {
+        quiz.nextQuestion();
+        currentQuestionIndex++;
+        if (currentQuestionIndex < numQuestions) {
+            displayQuestion();
+        } else {
+            displayFinalScore();
+        }
+    }
+    
 
     public int getAnswer() {
         if (answer1.isSelected()) {
@@ -77,14 +151,16 @@ public class QuizUI {
     }
 
     public void displayQuestion() {
+
         Question question = quiz.getQuestion();
-        questionLabel.setText(question.getQuestionText());
+        Question currentQuestion = quiz.getCurrentQuestion();
+
+        questionLabel.setText(currentQuestion.getQuestionText());
         
-        String[] answerChoices = question.getAnswerChoices();
-        answer1.setText(answerChoices[0]);
-        answer2.setText(answerChoices[1]);
-        answer3.setText(answerChoices[2]);
-        answer4.setText(answerChoices[3]);
+        String[] answerChoices = currentQuestion.getAnswerChoices();
+        for (int i = 0; i < answerButtons.length; i++) {
+            answerButtons[i].setText(answerChoices[i]);
+        }
         
         // clear the selected answer
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -117,6 +193,30 @@ public class QuizUI {
         answer4.setEnabled(false);
         submitButton.setEnabled(false);
     }
+
+
+    private void displayFinalScore() {
+        // disable GUI components as necessary
+        // ...
+
+        // calculate the percentage of correct answers
+        double percentage = (double) numCorrectAnswers / numQuestions * 100;
+
+        // display the final score
+        JOptionPane.showMessageDialog(null, "Quiz complete!\nYou answered " + numCorrectAnswers + " out of " + numQuestions + " questions correctly.\nYour score: " + percentage + "%");
+    }
+
+    public int getCurrentQuestionIndex() {
+        return currentQuestionIndex;
+    }
+
+
+
+
+    public int getNumQuestions() {
+        return numQuestions;
+    }
+    
 
     private class SubmitListener implements ActionListener {
 
@@ -152,5 +252,7 @@ public class QuizUI {
 
         
     }
+
+    
 }
 

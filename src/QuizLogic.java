@@ -9,17 +9,18 @@ public class QuizLogic {
         return quiz.isFinished();
     }
 
-    public Quiz loadQuiz() {
-        // create a new QuestionDatabase object by passing in the file name
-        QuestionDatabase questionDB = new QuestionDatabase("data/questions.txt");
-    
-        // get the list of questions from the QuestionDatabase object
-        ArrayList<Question> questions = questionDB.getQuestions();
-    
-        // create a new Quiz object and pass in the list of questions
-        Quiz quiz = new Quiz(questions);
-    
-        return quiz;
+    public Quiz loadQuiz(QuizCustomization quizCustomization, QuestionDatabase questionDB) {
+        ArrayList<Question> allQuestions = questionDB.getQuestions();
+        int numQuestions = quizCustomization.getNumQuestions();
+        if (numQuestions > allQuestions.size()) {
+            numQuestions = allQuestions.size();
+        }
+        ArrayList<Question> questions = new ArrayList<Question>();
+        for (int i = 0; i < numQuestions; i++) {
+            questions.add(allQuestions.get(i));
+        }
+        return new Quiz(questions);
     }
+    
     
 }
