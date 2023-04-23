@@ -13,14 +13,25 @@ public class QuizUI extends JFrame {
 
     public QuizUI(Quiz quiz) {
         this.quiz = quiz;
-        setTitle("Quiz Application");
-        setSize(600, 400);
+        initComponents();
+        displayNextQuestion();
+    }
+
+    private void initComponents() {
+        setTitle("SAT-tire, get ready!");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        questionPanel = new JPanel();
-        questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS));
-        add(questionPanel, BorderLayout.CENTER);
+        // Create separate panels for the question and answers sections
+        questionPanel = new JPanel(new BorderLayout());
+        JPanel answersPanel = new JPanel(new GridLayout(2, 2));
+
+        // Set the preferred size for questionPanel and answersPanel
+        questionPanel.setPreferredSize(new Dimension(600, 100));
+        answersPanel.setPreferredSize(new Dimension(600, 200));
+
+        add(questionPanel, BorderLayout.NORTH);
+        add(answersPanel, BorderLayout.CENTER);
 
         submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
@@ -33,16 +44,19 @@ public class QuizUI extends JFrame {
         });
         add(submitButton, BorderLayout.SOUTH);
 
-        questionLabel = new JLabel();
-        questionPanel.add(questionLabel);
+        questionLabel = new JLabel("", SwingConstants.CENTER);
+        questionPanel.add(questionLabel, BorderLayout.NORTH);
 
         answerButtons = new JRadioButton[4];
         answerGroup = new ButtonGroup();
         for (int i = 0; i < answerButtons.length; i++) {
             answerButtons[i] = new JRadioButton();
             answerGroup.add(answerButtons[i]);
-            questionPanel.add(answerButtons[i]);
+            answersPanel.add(answerButtons[i]);
         }
+
+        pack();
+        setLocationRelativeTo(null);
     }
 
     public void displayNextQuestion() {
@@ -54,7 +68,7 @@ public class QuizUI extends JFrame {
             System.exit(0);
         } else {
             Question question = quiz.getCurrentQuestion();
-            System.out.println("Displaying questions: " + question.getQuestionText()); // Debug Question 
+            System.out.println("Displaying questions: " + question.getQuestionText());
             questionLabel.setText(question.getQuestionText());
             String[] choices = question.getAnswerChoices();
             for (int i = 0; i < choices.length; i++) {
